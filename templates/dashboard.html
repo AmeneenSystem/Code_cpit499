@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!-- Coding by CodingNepal | www.codingnepalweb.com -->
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <title> Ameneen Dashboard </title>
+  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+  <style>
+    .col0,
+    .col1,
+    .col2,
+    .col3,
+    .col4 {
+      display: inline-block;
+      width: 40px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      position: absolute;
+      bottom: 100px;
+      max-height: 350px;
+    }
+
+    .col0 {
+      margin-left: 20px;
+      background-color: #{{col0color}};
+      height: {{col0}}px;
+    }
+
+    .col1 {
+      margin-left: 80px;
+      background-color: #{{col1color}};
+      height: {{col1}}px;
+    }
+
+    .col2 {
+      margin-left: 140px;
+      background-color: #{{col2color}};
+      height: {{col2}}px;
+    }
+
+    .col3 {
+      margin-left: 200px;
+      background-color: #{{col3color}};
+      height: {{col3}}px;
+    }
+
+    .col4 {
+      margin-left: 260px;
+      background-color: #{{col4color}};
+      height: {{col4}}px;
+    }
+
+    .labeltop {
+      position: absolute;
+      top: -20px;
+      color: whitesmoke;
+      width: 100%;
+      text-align: center;
+    }
+    .labelbottom{
+      position: absolute;
+      bottom: -20px;
+      color: whitesmoke;
+      width: 100%;
+      text-align: center;
+    }
+
+  </style>
+
+</head>
+
+<body>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+
+        <span>Dashboard</span>
+      </div>
+
+      <div class="datetime">
+        <a>Date & Time:</a>
+        <a class="date_time" id="datetime"></a>
+      </div>
+
+      <div class="profile-details">
+        <img src="static/images/logo.png" alt="logo">
+        <span class="admin_name">Hajj and umrah Ministry</span>
+      </div>
+
+
+    </nav>
+    
+
+    <div class="home-content">
+      <div class="overview-boxes">
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic">Total People</div>
+            <div class="number">{{total_people}}</div>
+          </div>
+          <i class="icon fas fa-users"></i>
+        </div>
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic">Total Notification</div>
+            <div class="number">{{notifications_count}}</div>
+          </div>
+          <i class="icon fas fa-bell"></i>
+        </div>
+      
+      </div>
+
+
+
+      <div class="areas-boxes">
+
+        <div class="center-areas box" style="width: 400px;margin-left: 20px;">
+          <div class="title">Ameneen System</div>
+          <div class="mapouter">
+            <div class="col0">
+              <div class="labeltop">{{col0}}</div>
+              <div class="labelbottom">Area&nbsp;0</div>
+            </div>
+            <div class="col1">
+              <div class="labeltop">{{col1}}</div>
+              <div class="labelbottom">Area&nbsp;1</div>
+            </div>
+            <div class="col2">
+              <div class="labeltop">{{col2}}</div>
+              <div class="labelbottom">Area&nbsp;2</div>
+            </div>
+            <div class="col3">
+              <div class="labeltop">{{col3}}</div>
+              <div class="labelbottom">Area&nbsp;3</div>
+            </div>
+            <div class="col4">
+              <div class="labeltop">{{col4}}</div>
+              <div class="labelbottom">Area&nbsp;4</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="center-areas box">
+          <div class="title">Ameneen System</div>
+          <div class="mapouter">
+
+            <span class="noti"></span>
+            <div class="gmap_canvas">
+              <br>
+              <iframe width="450" height="331" id="gmap_canvas"
+                src="static/location.html"
+                frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+              </iframe>              
+            </div>
+          </div>
+        </div>
+
+        <div class="top-areas box">
+          <div class="title">Ameneen System</div>
+          <ul class="top-areas-details">
+            <!-- Box content -->
+            {% if fullimgname|length == 0 %}
+            <img src="static/images/AmeneenPhoto.jpg" class="img">
+            {% endif %}
+            {% if fullimgname|length > 0 %}
+            <img src="{{fullimgname}}" class="img">
+            {% endif %}
+        </div>
+      </div>
+
+    </div>
+    <!-- New boxes in a new row -->
+    <!-- <div class="new-row-box"> -->
+    <!-- Box content -->
+    <!-- </div>
+<div class="twoBoxes"> -->
+    <!-- Box content -->
+
+    <!-- </div>
+
+<div class="twoBoxes">
+
+</div>
+       -->
+
+
+    </div>
+
+  </section>
+
+
+  <!-- Chart code -->
+  <script>
+
+
+    am5.ready(function () {
+
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create chart
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/
+      var chart = root.container.children.push(am5xy.XYChart.new(root, {
+        panX: true,
+        panY: true,
+        wheelX: "panX",
+        wheelY: "zoomX",
+        pinchZoomX: true
+      }));
+
+      // Add cursor
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+      var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+      cursor.lineY.set("visible", false);
+
+
+      // Create axes
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+      var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+      xRenderer.labeltops.template.setAll({
+        rotation: -90,
+        centerY: am5.p50,
+        centerX: am5.p100,
+        paddingRight: 15,
+        // fill: am5.color("#FFFFFF") // Set the fill color to white
+      });
+
+
+      xRenderer.grid.template.setAll({
+        location: 1
+      })
+
+      var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+        maxDeviation: 0.3,
+        categoryField: "area",
+        renderer: xRenderer,
+        tooltip: am5.Tooltip.new(root, {})
+      }));
+
+      var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+        maxDeviation: 0.3,
+        renderer: am5xy.AxisRendererY.new(root, {
+          strokeOpacity: 0.1
+        })
+      }));
+
+
+      // Create series
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+      var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+        name: "Series 1",
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        sequencedInterpolation: true,
+        categoryXField: "area",
+        tooltip: am5.Tooltip.new(root, {
+          labeltopText: "{valueY}"
+        })
+      }));
+
+      series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
+      series.columns.template.adapters.add("fill", function (fill, target) {
+        return chart.get("colors").getIndex(series.columns.indexOf(target));
+      });
+
+      series.columns.template.adapters.add("stroke", function (stroke, target) {
+        return chart.get("colors").getIndex(series.columns.indexOf(target));
+      });
+
+
+      // Set data
+      var data = [{
+        area: "Area 0",
+        value: 2025
+      }, {
+        area: "Area 1",
+        value: 1882
+      }, {
+        area: "Area 2",
+        value: 1809
+      }, {
+        area: "Area 3",
+        value: 1322
+      }, {
+        area: "Area 4",
+        value: 1122
+      }];
+
+      xAxis.data.setAll(data);
+      series.data.setAll(data);
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/
+      series.appear(1000);
+      chart.appear(1000, 100);
+
+    }); // end am5.ready()
+  </script>
+
+  <script>
+    var dt = new Date();
+    document.getElementById("datetime").innerHTML = dt.toLocaleTimeString(['it-IT'], { hour: "2-digit", minute: "2-digit" }) + "&nbsp;&nbsp;&nbsp;" + dt.toLocaleDateString() + "&nbsp;&nbsp;&nbsp;";
+
+  </script>
+
+
+</body>
+
+</html>

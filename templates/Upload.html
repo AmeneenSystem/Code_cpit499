@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Page</title>
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  <script>
+    function handleImageClick() {
+        document.getElementById("fileInput").click();
+    }
+
+    function handleFileSelect(event) {
+        var selectedFile = event.target.files[0];
+        var imageType = /^image\//;
+        
+        if (!selectedFile.type.match(imageType)) {
+            alert("Please select an image file.");
+            return;
+        }
+        
+        var previewImage = document.getElementById("previewImage");
+        previewImage.src = URL.createObjectURL(selectedFile);
+        previewImage.onload = function() {
+            URL.revokeObjectURL(previewImage.src);
+        };
+        previewImage.style.width = "100%";
+        previewImage.style.height = "100%";
+        previewImage.style.top = "0%";
+        previewImage.style.left = "0%";
+        
+    }
+
+    function upload_image(){
+      area = document.getElementById("area").value
+      var files = document.querySelector('[id=fileInput]').files;
+        var inputs_are_good = true;
+        if (files.length == 0) {
+            document.getElementById("filemessagered").innerHTML = "Please select an image";
+            inputs_are_good = false;
+
+        } else {
+            var filename = files[0].name;
+            if (filename.slice(-4) !== ".jpg" && filename.slice(-4) !== ".png" ) {
+                document.getElementById("filemessagered").innerHTML = "Invalid file";
+                inputs_are_good = false;
+            }
+        }
+        if (!inputs_are_good) {
+            return;
+        }
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            document.getElementById("filemessagered").innerHTML = "Uploading ...";
+            if (this.readyState == 4) {
+                document.getElementById("filemessagered").innerHTML = "";
+                window.location.replace("/dashboard?image=" + this.responseText);
+            }
+        };
+        const formData = new FormData();
+        xhttp.open("POST", "/uploadfile?area="+area, true);
+        // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        formData.append("file", files[0])
+        xhttp.send(formData);
+    }
+</script>
+<style>
+  img{
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+  <div class="center">
+    
+    <div class="login-box" style="background-color: #707171;">
+  <h1 style="background-color: #707171;padding: .6em;border-top-left-radius:.5em ;border-top-right-radius:.5em ;"> Upload Picture </h1>
+    
+      <!-- <form style="">  -->
+        <img src="static/images/Interface.png" alt="Interface Image">
+        <img id="previewImage" class="image2" src="static/images/drag-and-drop.png" onclick="handleImageClick()">
+		<input type="file" id="fileInput" style="display:none" onchange="handleFileSelect(event)">
+    <div style="background-color: #707171;padding: 1em;border-radius: .5em;">
+    <label for="area" style="display: inline-block;"><b>Select Area:</b></label>
+    <select id="area" name="area" style="display: inline-block;padding: .2em;border-radius: .5em;">
+        <option value="area 0" selected>area 0</option>
+        <option value="area 1">area 1</option>
+        <option value="area 2">area 2</option>
+        <option value="area 3">area 3</option>
+        <option value="area 4">area 4</option>
+    </select>
+    &emsp;&emsp;
+    <button class="" id="upload_image" style="padding: 1em;display: inline-block;border-radius: .5em;"
+            onclick="upload_image()">Upload</button>
+          </div>
+    <!-- </form> -->
+    
+      
+          
+      <span id="filemessagered" style="color:red"></span>
+    </div>
+  </div>
+
+</body>
+</html>
